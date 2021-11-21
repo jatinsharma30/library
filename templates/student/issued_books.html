@@ -1,0 +1,80 @@
+{% extends 'student/base1.html' %}
+{% block issuedActive %}active{% endblock issuedActive %}
+{% block body %}
+<div class="container">
+    <div id="table" class="my-3">
+        <h1>Issued Books</h1>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Book</th>
+                    <th scope="col">Issue Date</th>
+                    <th scope="col">Return Date</th>
+                    <th scope="col">Fine</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody id='tableBody'>
+                {% for book in iBooks %}
+                <tr>
+                    <td>{{book.book}}</td>
+                    <td>{{book.issue_date}}</td>
+                    <td>{{book.return_date}}</td>
+                    <td>{{book.calculate_fine}}</td>
+                    <td>
+                        <form action="extendDate/" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name='issue_id' value={{book.issue_id}}>
+                            <button type="submit" class="btn btn-primary mx-2">extend date</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="returnBook/" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name='issue_id' value={{book.issue_id}}>
+                            <button type="submit" class="btn btn-danger">return book</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% if book_requests|length > 0  %}
+<div class="container">
+    <div id="table" class="my-3">
+        <h1>extend requests</h1>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">status</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in book_requests %}
+                {% if req.type == 'extend' %}
+                <tr>
+                    <td>{{req.book.name}}</td>
+                    <td>{{req.book.author}}</td>
+                    <td>{{req.book.genre}}</td>
+                    <td>{{req.response}}</td>
+                    <td><form method="post" action="student/wishlist/deleteRequest/">
+                    {% csrf_token %}
+                    <input type="hidden" name="request_id" value={{req.request_id}}>
+                    <button type="submit" class="btn btn-danger">cancel</button>
+                    </form></td>
+                    </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endblock body %}

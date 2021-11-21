@@ -1,0 +1,130 @@
+{% extends 'teacher/base2.html' %}
+{% block title %}home{% endblock title %}
+{% block studentsActive %}active{% endblock studentsActive %}
+{% block css %}
+<style>
+*{
+    margin:0
+}
+    body {
+        background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+        font-size: large;
+    }
+</style>
+{% endblock css %}
+{% block body %}
+<div class="container">
+<h2 class="my-4 fw-bold">Total Students: {{total_students}}</h2>
+{% for user in users %}
+{% if user.userType == 'student' and user.is_superuser == False %}
+    <div class="card text-center my-5">
+        <div class="card-body">
+            <div class="col-md-6">
+                <div class="">
+                    
+                    <h1 class="text-sm-start">{{user.first_name|title}} {{user.last_name}}</h1>
+                    
+                    <p class="text-sm-start">ISSUED BOOKS :<span class="fw-bold" id="{{user.id}}numBook">0</span>
+                    </p>
+                    
+                </div>
+            </div>
+            <hr>
+            <div class="col-md-8">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active">
+                        <div class="row">
+                            <div class="col-md-3 text-sm-start mx-3">
+                                <label class="fw-bold">User Id</label>
+                            </div>
+                            <div class="col-md-4 text-sm-start mx-2">
+                                <p class="text-primary fw-bold">{{user.id}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 text-sm-start mx-3">
+                                <label class="fw-bold">First Name</label>
+                            </div>
+                            <div class="col-md-4 text-sm-start mx-2">
+                                <p class="text-primary fw-bold">{{user.first_name}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 text-sm-start mx-3">
+                                <label class="fw-bold">Last Name</label>
+                            </div>
+                            <div class="col-md-4 text-sm-start mx-2">
+                                <p class="text-primary fw-bold">{{user.last_name}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 text-sm-start mx-3">
+                                <label class="fw-bold">username</label>
+                            </div>
+                            <div class="col-md-4 text-sm-start mx-2">
+                                <p class="text-primary fw-bold">{{user.username}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 text-sm-start mx-3">
+                                <label class="fw-bold">Email</label>
+                            </div>
+                            <div class="col-md-4 text-sm-start mx-2">
+                                <p class="text-primary fw-bold">{{user.email}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 text-sm-start mx-3">
+                                <label class="fw-bold">Issued books</label>
+                            </div>
+                            <div class="col-md-6 ">
+                                <ul class="text-sm-start mx-0"id="{{user.id}}book">
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 text-sm-start mx-3">
+                                <label class="fw-bold">Total Fine:</label>
+                            </div>
+                            <div class="col-md-4 text-sm-start mx-2" id="{{user.id}}">                               
+                                <p class="text-primary fw-bold">0</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+{% endblock body %}
+{% block js %}
+<script>
+{% for book in issuedbooks %}
+//handling issued books sections of users
+user=document.getElementById("{{book.user.id}}book")
+var uiString=`<li class="text-primary fw-bold ">${'{{book.book}}'}</li>`;
+user.innerHTML+=uiString; 
+
+//handling fine sections of users
+userFine=document.getElementById("{{book.user.id}}")
+x=parseInt(userFine.textContent)
+x+={{book.calculate_fine}}
+userFine.innerHTML=`<p class="text-primary fw-bold">${x}</p>`
+
+//handling number of books issued by a student
+total_books=document.getElementById("{{book.user.id}}numBook")
+n=parseInt(total_books.textContent)
+n+=1
+total_books.textContent=n
+{% endfor %}
+
+//search 
+function search() {
+    searchText=document.getElementById('searchText');
+    console.log(searchText.value);
+}
+</script>
+{% endblock js %}

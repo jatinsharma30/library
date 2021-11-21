@@ -1,0 +1,60 @@
+{% extends 'home/base.html' %}
+{% block title %}home{% endblock title %}
+{% load static %}
+{% block css %} 
+<style>
+    *{
+        margin: 0px;
+        padding: 0px;
+    }
+/* .container{
+    background-image: url("{% static 'img/home.jpg' %}");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 100vw;
+    height: 60vh;
+    margin: 0px;
+    padding: 0px;
+} */
+</style>
+{% endblock css %}
+{% block body %}
+    <!-- add book -->
+    
+    <div class="container">
+    <!-- <img src="{% static 'img/home.jpg' %}" class="bg-img" > -->
+        <h1>Library</h1>
+        <hr>
+         <!-- show books -->
+         <div id="table" class="my-3">
+            <h1>Available Books</h1>
+            <hr>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Type</th>
+                    </tr>
+                </thead>
+                <tbody id='tableBody'></tbody>
+                {% for book in books %}
+                <tr>
+                    <td>{{book.name}}</td>
+                    <td>{{book.author}}</td>
+                    <td>{{book.genre}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock body %}
+
+{% block js %}
+<script>
+function deleteBook(element){
+    console.log(element.id)
+}
+</script>
+{% endblock js %}

@@ -1,0 +1,102 @@
+{% extends 'student/base1.html' %}
+{% block wishListActive %}active{% endblock wishListActive %}
+{% block body %}
+<div class="container">
+    <div id="table" class="my-3">
+        <h1>Your wishlist</h1>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Type</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody id='tableBody'>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% if book_requests|length > 0  %}
+<div class="container">
+    <div id="table" class="my-3">
+        <h1>Pending requests</h1>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">status</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in book_requests %}
+                {% if req.response != 'accept' %}
+                <tr>
+                    <td>{{req.book.name}}</td>
+                    <td>{{req.book.author}}</td>
+                    <td>{{req.book.genre}}</td>
+                    <td>{{req.response}}</td>
+                    <td><form method="post" action="deleteRequest/">
+                    {% csrf_token %}
+                    <input type="hidden" name="request_id" value={{req.request_id}}>
+                    <button type="submit" class="btn btn-danger">cancel</button>
+                    </form></td>
+                    </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endblock body %}
+
+{% block js %}
+<script>
+    refreshList()
+    function addtowishlist(name, author, genre, id) {
+        book_id = document.getElementById(id);
+        console.log(name, author, genre, id);
+        book_id.style.display = "none";
+        let obj = JSON.parse(localStorage.getItem('obj')) || {};
+        obj[id] = [name, author, genre];
+        localStorage.setItem('obj', JSON.stringify(obj));
+    }
+    function refreshList() {
+        let books = JSON.parse(localStorage.getItem('obj'));
+        let tableBody=document.getElementById('tableBody');
+        if(books==null){
+            tableBody.innerHTML+=`<tr>Add</tr>`
+        }else {
+            for (let i in books) {
+                console.log(books)
+                let uiString=`
+                    <tr id=${i} >
+                    <td>${books[i][0]}</td>
+                    <td>${books[i][1]}</td>
+                    <td>${books[i][2]}</td>
+                    <td><a  onclick="deleteBook(${i})" class="btn btn-danger">remove</a></td>
+                    <td><form method="post" action="/student/request/">
+                    {% csrf_token %}
+                    <input type="hidden" name="book" value=${i}>
+                    <button type="submit" onclick="deleteBook(${i})" class="btn btn-primary">request</button>
+                    </form></td>
+                    </tr>`;
+                tableBody.innerHTML+=uiString;  
+            }
+        }
+    }
+    function deleteBook(id){
+        let books = JSON.parse(localStorage.getItem('obj'));
+        delete books[id];
+        localStorage.setItem('obj', JSON.stringify(books));
+        let book=document.getElementById(id);
+        book.style.display="none";
+    }
+</script>
+{% endblock js %}

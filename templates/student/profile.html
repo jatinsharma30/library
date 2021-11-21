@@ -1,0 +1,99 @@
+{% extends 'student/base1.html' %}
+{% block css %}
+<style>
+*{
+    margin:0
+}
+    body {
+        background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+        font-size: large;
+    }
+</style>
+{% endblock css %}
+{% block profileActive %}active{% endblock profileActive %}
+{% block body %}
+<div class="container">
+    <div class="card text-center my-5">
+
+        <div class="card-body">
+            <div class="col-md-6">
+                <div class="">
+                    <h1 class="text-sm-start">Jatin sharma</h1>
+                    <p class="text-sm-start">ISSUED BOOKS :<span class="fw-bold"> {{ books|length }}</span>
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <div class="col-md-8">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active">
+                        <div class="row">
+                            <div class="col-md-3 text-sm-start mx-3">
+                                <label class="fw-bold">User Id</label>
+                            </div>
+                            <div class="col-md-4 text-sm-start mx-2">
+                                <p class="text-primary fw-bold">{{request.user.id}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 text-sm-start mx-3">
+                                <label class="fw-bold">First Name</label>
+                            </div>
+                            <div class="col-md-4 text-sm-start mx-2">
+                                <p class="text-primary fw-bold">{{request.user.first_name}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 text-sm-start mx-3">
+                                <label class="fw-bold">Last Name</label>
+                            </div>
+                            <div class="col-md-4 text-sm-start mx-2">
+                                <p class="text-primary fw-bold">{{request.user.last_name}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 text-sm-start mx-3">
+                                <label class="fw-bold">username</label>
+                            </div>
+                            <div class="col-md-4 text-sm-start mx-2">
+                                <p class="text-primary fw-bold">{{request.user.username}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 text-sm-start mx-3">
+                                <label class="fw-bold">Email</label>
+                            </div>
+                            <div class="col-md-4 text-sm-start mx-2">
+                                <p class="text-primary fw-bold">{{request.user.email}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 text-sm-start mx-3">
+                                <label class="fw-bold">Issued books</label>
+                            </div>
+                            <div class="col-md-4 ">
+                                <ul class="text-sm-start mx-0">
+                                {% for book in books %}
+                                <li class="text-primary fw-bold ">{{book.book.name}}</li>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 text-sm-start mx-3">
+                                <label class="fw-bold">Total Fine:</label>
+                            </div>
+                            <div class="col-md-4 text-sm-start mx-2">
+                                <p class="text-primary fw-bold">{{total_fine}}</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+{% block js %}
+{% endblock js %}

@@ -1,0 +1,74 @@
+{% extends 'home/base2.html' %}
+{% block title %}home{% endblock title %}
+{% block body %}
+    <!-- add book -->
+    <div class="container my-3">
+        <h1>Library</h1>
+        <hr>
+        <form id="libraryForm" action="" method="post">
+            {% csrf_token %}
+            <div class="row mb-3">
+                <label for="bookName" class="col-sm-2 col-form-label">Book</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="bookName" name="bookName" placeholder="Book name">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="Author" class="col-sm-2 col-form-label">Author</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="author" name="author" placeholder="Author">
+                </div>
+            </div>
+            <fieldset class="row mb-3">
+                <legend class="col-form-label col-sm-2 pt-0">Genre</legend>
+                <div class="col-sm-10">
+                    <select class="form-select" name="genre" aria-label="Default select example">
+                        <option selected value="">Select Genre</option>
+                        <option value="Drama">Drama</option>
+                        <option value="Fantasy">Fantasy</option>
+                        <option value="Fiction">Fiction</option>
+                        <option value="Horror">Horror</option>
+                        <option value="Mythology">Mythology</option>
+                        <option value="Mystery">Mystery</option>
+                        <option value="Science Fiction">Science Fiction</option>
+                    </select>
+
+
+                </div>
+            </fieldset>
+            <button type="submit" class="btn btn-primary">Add Book</button>
+        </form>
+
+        <!-- show books -->
+        <div id="table" class="my-3">
+            <h1>Your Books</h1>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Type</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody id='tableBody'></tbody>
+                {% for book in books %}
+                <tr>
+                    <td>{{book.name}}</td>
+                    <td>{{book.author}}</td>
+                    <td>{{book.genre}}</td>
+                    <td><a href="{% url 'delete_book' book.book_id %}" class="btn btn-primary">Delete</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock body %}
+
+{% block js %}
+<script>
+function deleteBook(element){
+    console.log(element.id)
+}
+</script>
+{% endblock js %}
