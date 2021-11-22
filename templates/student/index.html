@@ -48,6 +48,9 @@
         // console.log(typeof(books))
         // console.log(Object.keys(books).length)
         if (Object.keys(books).length > 0) {
+            let wishList=document.getElementById('wishList');
+            console.log(wishList)
+            wishList.innerText=`wishlist(${Object.keys(books).length})`
             for (let i in books) {
                 // console.log('id is', i);
                 let book = document.getElementById(i);

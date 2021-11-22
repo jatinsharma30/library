@@ -70,9 +70,15 @@
     function refreshList() {
         let books = JSON.parse(localStorage.getItem('obj'));
         let tableBody=document.getElementById('tableBody');
+        let wishList=document.getElementById('wishList');
         if(books==null){
-            tableBody.innerHTML+=`<tr>Add</tr>`
+            tableBody.innerHTML+=`<tr>Add</tr>`;
+            wishList.innerText=`wishlist`;
         }else {
+            var x=Object.keys(books).length;
+            console.log(books);
+            console.log(x);
+            wishList.innerText=`wishlist(${x})`;
             for (let i in books) {
                 console.log(books)
                 let uiString=`
