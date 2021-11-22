@@ -42,6 +42,12 @@
         let obj = JSON.parse(localStorage.getItem('obj')) || {};
         obj[id] = [name, author, genre];
         localStorage.setItem('obj', JSON.stringify(obj));
+        refreshList();
+        let wishlistMsg=document.getElementById('wishlist-msg');
+        wishlistMsg.innerHTML=`<div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <strong>Message : </strong> book Added to wishlist
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>`;
     }
     function refreshList() {
         let books = JSON.parse(localStorage.getItem('obj')) || {};
